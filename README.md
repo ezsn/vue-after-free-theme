@@ -1,2 +1,2 @@
-# vue-after-free-theme
-Theme for Vue After Free
+# Vue After Free Theme
+Theme for Vue After Free v1.4
