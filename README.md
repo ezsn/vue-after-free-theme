@@ -3,6 +3,8 @@
 Theme pack for **Vue After Free v1.4**.
 
 ## Install
+> [!WARNING]
+> Backup your savedata first, before installing theme
 
 1. **Open Vue After Free on your PS4**  
    > Important: Vue After Free must be running while you use FTP.
