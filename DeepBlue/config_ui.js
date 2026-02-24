@@ -130,7 +130,7 @@ if (typeof lang === 'undefined') {
 
   // Background & logo remain your theme assets
   var background = new Image({
-    url: 'file:///../download0/themes/ps4ui/img/background.png',
+    url: 'file:///../download0/themes/DeepBlue/img/background.png',
     x: 0,
     y: 0,
     width: 1920,

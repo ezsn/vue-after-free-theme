@@ -32,10 +32,10 @@
   var buttonOrigPos = [];
   var textOrigPos = [];
   var fileList = [];
-    var normalButtonImg = 'file://../download0/themes/hacker/img/ps4_bar_normal.png';
-    var selectedButtonImg = 'file://../download0/themes/hacker/img/ps4_bar_selected.png';
+    var normalButtonImg = 'file://../download0/themes/Watchdogs2/img/ps4_bar_normal.png';
+    var selectedButtonImg = 'file://../download0/themes/Watchdogs2/img/ps4_bar_selected.png';
   var background = new Image({
-    url: 'file://../download0/themes/hacker/img/background.png',
+    url: 'file://../download0/themes/Watchdogs2/img/background.png',
     x: 0,
     y: 0,
     width: 1920,
