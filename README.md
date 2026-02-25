@@ -1,6 +1,6 @@
-# Vue After Free Theme (v1.4)
+# Vue After Free Theme (v1.4+)
 
-Theme pack for **Vue After Free v1.4**.
+Theme pack for **Vue After Free v1.4+**.
 
 ## Install
 > [!WARNING]
