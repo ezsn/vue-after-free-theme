@@ -329,25 +329,20 @@ if (typeof lang === 'undefined') {
       log('Config not loaded yet, skipping save');
       return;
     }
-    var configContent = 'const CONFIG = {\n';
-    configContent += '    autolapse: ' + currentConfig.autolapse + ',\n';
-    configContent += '    autopoop: ' + currentConfig.autopoop + ',\n';
-    configContent += '    autoclose: ' + currentConfig.autoclose + ',\n';
-    configContent += '    autoclose_delay: ' + currentConfig.autoclose_delay + ', //set to 20000 for ps4 hen\n';
-    configContent += '    music: ' + currentConfig.music + ',\n';
-    configContent += '    jb_behavior: ' + currentConfig.jb_behavior + ',\n';
-    configContent += '    theme: \'' + currentConfig.theme + '\'\n';
-    configContent += '};\n\n';
-    configContent += 'const payloads = [ //to be ran after jailbroken\n';
-    for (var _i3 = 0; _i3 < userPayloads.length; _i3++) {
-      configContent += '    "' + userPayloads[_i3] + '"';
-      if (_i3 < userPayloads.length - 1) {
-        configContent += ',';
-      }
-      configContent += '\n';
-    }
-    configContent += '];\n';
-    fs.write('config.js', configContent, function (err) {
+    var configData = {
+      config: {
+        autolapse: currentConfig.autolapse,
+        autopoop: currentConfig.autopoop,
+        autoclose: currentConfig.autoclose,
+        autoclose_delay: currentConfig.autoclose_delay,
+        music: currentConfig.music,
+        jb_behavior: currentConfig.jb_behavior,
+        theme: currentConfig.theme
+      },
+      payloads: userPayloads
+    };
+    var configContent = JSON.stringify(configData, null, 2);
+    fs.write('config.json', configContent, function (err) {
       if (err) {
         log('ERROR: Failed to save config: ' + err.message);
       } else {
@@ -356,35 +351,41 @@ if (typeof lang === 'undefined') {
     });
   }
   function loadConfig() {
-    fs.read('config.js', function (err, data) {
+    fs.read('config.json', function (err, data) {
       if (err) {
         log('ERROR: Failed to read config: ' + err.message);
         return;
       }
       try {
-        eval(data || ''); // eslint-disable-line no-eval
-        if (typeof CONFIG !== 'undefined') {
-          currentConfig.autolapse = CONFIG.autolapse || false;
-          currentConfig.autopoop = CONFIG.autopoop || false;
-          currentConfig.autoclose = CONFIG.autoclose || false;
-          currentConfig.autoclose_delay = CONFIG.autoclose_delay || 0;
-          currentConfig.music = CONFIG.music !== false;
-          currentConfig.jb_behavior = CONFIG.jb_behavior || 0;
+        var configData = JSON.parse(data || '{}');
+        if (configData.config) {
+          var _CONFIG = configData.config;
+          currentConfig.autolapse = _CONFIG.autolapse || false;
+          currentConfig.autopoop = _CONFIG.autopoop || false;
+          currentConfig.autoclose = _CONFIG.autoclose || false;
+          currentConfig.autoclose_delay = _CONFIG.autoclose_delay || 0;
+          currentConfig.music = _CONFIG.music !== false;
+          currentConfig.jb_behavior = _CONFIG.jb_behavior || 0;
 
           // Validate and set theme (themes are auto-discovered from directory scan)
-          if (CONFIG.theme && availableThemes.includes(CONFIG.theme)) {
-            currentConfig.theme = CONFIG.theme;
+          if (_CONFIG.theme && availableThemes.includes(_CONFIG.theme)) {
+            currentConfig.theme = _CONFIG.theme;
           } else {
-            log('WARNING: Theme "' + (CONFIG.theme || 'undefined') + '" not found in available themes, using default');
+            log('WARNING: Theme "' + (_CONFIG.theme || 'undefined') + '" not found in available themes, using default');
             currentConfig.theme = availableThemes[0] || 'default';
           }
 
           // Preserve user's payloads
-          if (typeof payloads !== 'undefined' && Array.isArray(payloads)) {
-            userPayloads = payloads.slice();
+          if (configData.payloads && Array.isArray(configData.payloads)) {
+            userPayloads = configData.payloads.slice();
           }
-          for (var _i4 = 0; _i4 < configOptions.length; _i4++) {
-            updateValueText(_i4);
+          for (var _i3 = 0; _i3 < configOptions.length; _i3++) {
+            updateValueText(_i3);
+          }
+          if (currentConfig.music) {
+            startBgmIfEnabled();
+          } else {
+            stopBgm();
           }
           configLoaded = true;
           log('Config loaded successfully');
