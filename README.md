@@ -1,6 +1,8 @@
-# Vue After Free Theme (v1.4+)
+# Vue After Free Theme (v2.0)
 
-Theme pack for **Vue After Free v1.4+**.
+Theme pack for **Vue After Free v2.0**.
+
+Tested FW 9.00
 
 ## Install
 > [!WARNING]
